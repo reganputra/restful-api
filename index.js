@@ -1,14 +1,21 @@
 //import express
 const express = require('express')
-
 //import router
 const router = require('./routes/router')
+// import body-parser
+const bodyParser = require('body-parser')
 
 //init app
 const app = express()
 
 //define port
 const port = 3000;
+
+// use body-parser
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 //route
 app.get('/', (req, res) => {
