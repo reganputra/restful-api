@@ -1,12 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+//import PrismaClient
+const { PrismaClient } = require('@prisma/client');
 
-// init prisma client
+//init prisma client
 const prisma = new PrismaClient();
 
-// find post
-const findPost = async (req, res) => {
+//function findPosts
+const findPosts = async (req, res) => {
     try {
-        // get all posts from database
+        //get all posts from database
         const posts = await prisma.post.findMany({
             select: {
                 id: true,
@@ -15,12 +16,12 @@ const findPost = async (req, res) => {
                 createdAt: true,
                 updatedAt: true,
             },
-            orderBy:{
+            orderBy: {
                 createdAt: "desc",
             },
         });
 
-        // send response
+        //send response
         res.status(200).send({
             success: true,
             message: "Get All Posts Successfully",
@@ -28,11 +29,16 @@ const findPost = async (req, res) => {
         });
 
     } catch (error) {
+        console.error('Error fetching posts:', error); // Log the error
         res.status(500).send({
             success: false,
-            message: "Internal Server Error",
-        })
+            message: "Internal server error",
+            error: error.message, // Include error message in response
+        });
     }
 };
 
-module.exports = findPost;
+//export function
+module.exports = {
+    findPosts,
+};
