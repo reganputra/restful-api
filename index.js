@@ -4,9 +4,14 @@ const express = require('express')
 const router = require('./routes/router')
 // import body-parser
 const bodyParser = require('body-parser')
+// import cors
+const cors = require('cors')
 
 //init app
 const app = express()
+
+// use cors
+app.use(cors())
 
 //define port
 const port = 3000;
