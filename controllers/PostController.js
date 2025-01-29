@@ -1,5 +1,7 @@
 //import PrismaClient
 const { PrismaClient } = require('@prisma/client');
+// Import validationResult from express-validator
+const { validationResult } = require("express-validator");
 
 //init prisma client
 const prisma = new PrismaClient();
@@ -38,7 +40,47 @@ const findPosts = async (req, res) => {
     }
 };
 
+// create post
+const createPost = async (req, res) => {
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send({
+            success: false,
+            message: "Validation errors",
+            errors: errors.array(),
+        });
+    }
+
+    try {
+        // insert data
+        const post = await prisma.post.create({
+            data: {
+                title: req.body.title,
+                content: req.body.content,
+            },
+        });
+
+        // Send response
+        res.status(200).send({
+            success: true,
+            message: "Post created successfully",
+            data: post,
+        });
+
+    } catch (error) {
+        console.error('Error creating post:', error); // Log the error
+        res.status(500).send({
+            success: false,
+            message: "Internal server error",
+            error: error.message, // Include error message in response
+        });
+    }
+}
+
 //export function
 module.exports = {
     findPosts,
+    createPost
 };
