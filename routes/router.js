@@ -15,6 +15,8 @@ router.get('/posts', PostController.findPosts);
 router.post('/posts', postValidation, PostController.createPost);
 // define route for get post by id
 router.get('/posts/:id', PostController.getPostById);
+// define route for update post
+router.put('/posts/:id', postValidation, PostController.updatePost);
 
 //export router
 module.exports = router;
