@@ -13,6 +13,8 @@ const PostController = require('../controllers/PostController');
 router.get('/posts', PostController.findPosts);
 //define route for create post
 router.post('/posts', postValidation, PostController.createPost);
+// define route for get post by id
+router.get('/posts/:id', PostController.getPostById);
 
 //export router
 module.exports = router;
