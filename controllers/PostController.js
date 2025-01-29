@@ -115,6 +115,8 @@ const getPostById = async (req, res) => {
     }
 };
 
+
+
 // update post
 const updatePost = async (req, res) => {
 
@@ -161,10 +163,41 @@ const updatePost = async (req, res) => {
     }
 };
 
+// delete post
+const deletePost = async (req, res) => {
+    // Get post id from request params
+    const {id} = req.params;
+
+    try {
+        // delete post
+        const post = await prisma.post.delete({
+            where:{
+                id: id,
+            },
+        });
+
+        // send response
+        res.status(200).send({
+            success: true,
+            message: `Post deleted successfully`,
+            data: post,
+        });
+
+    } catch (error) {
+        console.error('Error creating post:', error); // Log the error
+        res.status(500).send({
+            success: false,
+            message: "Internal server error",
+            error: error.message, // Include error message in response
+        });
+    }
+};
+
 //export function
 module.exports = {
     findPosts,
     createPost,
     getPostById,
     updatePost,
+    deletePost,
 };
